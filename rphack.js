@@ -1,3 +1,4 @@
+javascript:
 var output = [];
 var footer = document.getElementById("footer");
 footer.innerHTML += "<div id='custom'></div>";
@@ -41,11 +42,18 @@ function getAnswers () {
 	var currentQuestion = -1;
 	var container = document.getElementById("custom");
 	for (var i in children) {
-		if (((children[i].className == "current" && !(/partial/.test(children[i].className)) && !(/incorrect/.test(children[i].className))) || children[i].className == "") && currentQuestion == -1) {
+		if (((children[i].className == "current" &&
+			!(/partial/.test(children[i].className)) &&
+			!(/incorrect/.test(children[i].className))) ||
+			children[i].className == "") &&
+			currentQuestion == -1) {
+
 			currentQuestion = i;
+
 		}
 	}
 	custom.innerHTML = output[currentQuestion];
 }
 
 setInterval(getAnswers, 100);
+void 0.
