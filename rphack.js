@@ -51,7 +51,7 @@ function getAnswers () {
 
 		}
 	}
-	custom.innerHTML = `<div style="color:blue">${output[currentQuestion]}</div>`;
+	custom.innerHTML = output[currentQuestion];
 }
 
 setInterval(getAnswers, 100);
