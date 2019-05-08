@@ -1,5 +1,5 @@
 var output = [];
-var footer = document.getElementById("footer-bottombar");
+var footer = document.getElementById("footer-topbar");
 footer.innerHTML += "<div id='custom'></div>";
 var letterLookup = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 RPUI.use(["readingHeaders", "story"], mod => {
