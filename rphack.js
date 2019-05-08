@@ -39,7 +39,7 @@ RPUI.use(["readingHeaders", "story"], mod => {
 function getAnswers () {
 	var children = Array.from(document.getElementsByClassName("progress")[0].children);
 	var currentQuestion = -1;
-	var container = /*document.getElementById("custom")*/footer;
+	var container = document.getElementById("custom");
 	for (var i in children) {
 		if (((/current/.test(children[i].className) &&
 			!(/partial/.test(children[i].className)) &&
