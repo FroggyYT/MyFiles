@@ -1,5 +1,5 @@
 var output = [];
-var footer = document.getElementById("footer");
+var footer = document.getElementById("footer-bottombar");
 footer.innerHTML += "<div id='custom'></div>";
 var letterLookup = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 RPUI.use(["readingHeaders", "story"], mod => {
@@ -39,7 +39,7 @@ RPUI.use(["readingHeaders", "story"], mod => {
 function getAnswers () {
 	var children = Array.from(document.getElementsByClassName("progress")[0].children);
 	var currentQuestion = -1;
-	var container = document.getElementById("custom");
+	var container = /*document.getElementById("custom")*/footer;
 	for (var i in children) {
 		if (((/current/.test(children[i].className) &&
 			!(/partial/.test(children[i].className)) &&
