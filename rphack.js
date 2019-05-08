@@ -41,7 +41,7 @@ function getAnswers () {
 	var currentQuestion = -1;
 	var container = document.getElementById("custom");
 	for (var i in children) {
-		if (((children[i].className == "current" &&
+		if (((/current/.test(children[i].className) &&
 			!(/partial/.test(children[i].className)) &&
 			!(/incorrect/.test(children[i].className))) ||
 			children[i].className == "") &&
