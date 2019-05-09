@@ -43,6 +43,7 @@ function getAnswers () {
 	for (var i in children) {
 		if (((/current/.test(children[i].className) &&
 			!(/partial/.test(children[i].className)) &&
+			!(/correct/.test(children[i].className)) &&
 			!(/incorrect/.test(children[i].className))) ||
 			children[i].className == "") &&
 			currentQuestion == -1) {
