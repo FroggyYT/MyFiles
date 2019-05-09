@@ -51,7 +51,7 @@ function getAnswers () {
 
 		}
 	}
-	custom.innerHTML = output[currentQuestion];
+	container.innerHTML = output[currentQuestion];
 }
 
 setInterval(getAnswers, 100);
