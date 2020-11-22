@@ -214,9 +214,9 @@ Fullbrightx.Value = 0
 Fullbrighty.Value = 200
 
 Clock.Name = "Clock"
-Clock.Parent = Main
+Clock.Parent = TopBar
 Clock.Size = UDim2.new(0, 300, 0, 50)
-Clock.Position = UDim2.new(0, 0, 0, 350)
+Clock.Position = UDim2.new(0, 0, 0, 400)
 Clock.BackgroundTransparency = 0.7
 Clock.BackgroundColor3 = Color3.new(0, 0, 0)
 Clock.BorderSizePixel = 0
@@ -228,7 +228,7 @@ local Clocky = Instance.new("NumberValue", Clock)
 Clockx.Name = "px"
 Clocky.Name = "py"
 Clockx.Value = 0
-Clocky.Value = 350
+Clocky.Value = 400
 
 NoClip.Name = "NoClip"
 NoClip.Parent = Main
@@ -800,10 +800,10 @@ end)
 
 MinButton.MouseButton1Down:Connect(function()
 	local goal = {}
-	goal.Size = UDim2.new(0, 300, 0, 0)
-	goal.Transparency = 1
-	goal.Visible = false
-	Main.Active = false
+	goal.Size = UDim2.new(0, 300, 0, 50)
+	--goal.Transparency = 1
+	--goal.Visible = false
+	--Main.Active = false
 	
 	local info = TweenInfo.new(tSpeed)
 	
@@ -824,6 +824,15 @@ MinButton.MouseButton1Down:Connect(function()
 		
 		tween:Play()
 	end
+	
+	local goal = {}
+	goal.Position = UDim2.new(0, 0, 0, 50)
+	
+	local info = TweenInfo.new(tSpeed)
+	
+	local tween = TweenService:Create(Clock, info, goal)
+	
+	tween:Play()
 	
 	TpsToggle = -1
 	tweenTps()
@@ -856,6 +865,15 @@ MaxButton.MouseButton1Down:Connect(function()
 		
 		tween:Play()
 	end
+	
+	local goal = {}
+	goal.Position = UDim2.new(0, Clock.px.Value, 0, Clock.py.Value)
+	
+	local info = TweenInfo.new(tSpeed)
+	
+	local tween = TweenService:Create(Clock, info, goal)
+	
+	tween:Play()
 end)
 
 
