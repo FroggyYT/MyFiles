@@ -799,7 +799,8 @@ function getFruit()
 	local oldPos = players.LocalPlayer.Character.HumanoidRootPart.CFrame
 	players.LocalPlayer.Character.HumanoidRootPart.CFrame = fruitPos
 	wait()
-	click_detector(fruit.ClickDetector, 10)
+	local cd = click_detector or fireclickdetector
+	cd(fruit.ClickDetector, 10)
 	wait()
 	players.LocalPlayer.Character.HumanoidRootPart.CFrame = oldPos
 
