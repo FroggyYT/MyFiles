@@ -12,7 +12,7 @@ Mouse.KeyDown:Connect(function(key)
 end)
 
 
-
+-- -4237.2, 533.9, 1062.2
 
 
 if game.CoreGui:FindFirstChild("CannibalMenu") then
@@ -48,6 +48,39 @@ function clockTimeTo12Hr(cTime)
 	return tostring(math.floor(twelveHr)) .. ":" .. minute .. pmAm
 end
 
+function clockMinThresh(cTime, targetHr, targetMin, thresh)
+	local twelveHr
+	local pmAm = "AM"
+	local hr = math.floor(cTime)
+	local minute = ""
+	
+	if hr > 12 then
+		pmAm = " PM"
+		twelveHr = cTime - 12
+	else
+		twelveHr = cTime
+		pmAm = " AM"
+	end
+	
+	local minu = twelveHr - math.floor(twelveHr)
+	
+	if (math.floor(twelveHr) == 0) then
+		twelveHr = 12 + (minu)
+	end
+	
+	minute = math.floor(minu * 60)
+	
+	if (#minute < 2) then
+		minute = "0" .. minute
+	end
+	
+	if math.floor(twelveHr) == targetHr and math.abs(targetMin - minu) <= thresh then
+		return true
+	else
+		return false
+	end
+end
+
 
 
 local TweenService = game:GetService("TweenService")
@@ -77,6 +110,7 @@ local FlyButton = Instance.new("TextButton")
 local AdminTp = Instance.new("TextButton")
 local BunkerTp = Instance.new("TextButton")
 local SpawnTp = Instance.new("TextButton")
+local AFK = Instance.new("TextButton")
 
 local TpsToggle = -1
 
@@ -216,7 +250,7 @@ Fullbrighty.Value = 200
 Clock.Name = "Clock"
 Clock.Parent = TopBar
 Clock.Size = UDim2.new(0, 300, 0, 50)
-Clock.Position = UDim2.new(0, 0, 0, 400)
+Clock.Position = UDim2.new(0, 0, 0, 600)
 Clock.BackgroundTransparency = 0.7
 Clock.BackgroundColor3 = Color3.new(0, 0, 0)
 Clock.BorderSizePixel = 0
@@ -228,7 +262,7 @@ local Clocky = Instance.new("NumberValue", Clock)
 Clockx.Name = "px"
 Clocky.Name = "py"
 Clockx.Value = 0
-Clocky.Value = 400
+Clocky.Value = 600
 
 NoClip.Name = "NoClip"
 NoClip.Parent = Main
@@ -263,6 +297,23 @@ FlyButtonx.Name = "px"
 FlyButtony.Name = "py"
 FlyButtonx.Value = 0
 FlyButtony.Value = 300
+
+AFK.Name = "AFK"
+AFK.Parent = Main
+AFK.Size = UDim2.new(0, 300, 0, 50)
+AFK.Position = UDim2.new(0, 0, 0, 350)
+AFK.BackgroundTransparency = 0.7
+AFK.BackgroundColor3 = Color3.new(0, 0, 0)
+AFK.BorderSizePixel = 0
+AFK.Text = "AFK [OFF]"
+AFK.TextColor3 = Color3.new(1, 1, 1)
+AFK.TextSize = 20
+local AFKx = Instance.new("NumberValue", AFK)
+local AFKy = Instance.new("NumberValue", AFK)
+AFKx.Name = "px"
+AFKy.Name = "py"
+AFKx.Value = 0
+AFKy.Value = 350
 
 Teleports.Name = "Teleports"
 Teleports.Parent = TopBar
@@ -489,6 +540,7 @@ function toggleNoclip()
 end
 
 NoClip.MouseButton1Down:Connect(toggleNoclip)
+FlyButton.MouseButton1Down:Connect(toggleFly)
 
 function ClockLoop()
 	Clock.Text = clockTimeTo12Hr(game.Lighting.ClockTime)
@@ -671,9 +723,27 @@ end
 
 
 
+local AFKT = -1
 
+local Threshold = 2
 
+function afkLoop()
+	if clockMinThresh(game.Lighting.ClockTime, 6, 0, Threshold) then
+		
+	end
+end
 
+local AFKK = nil
+
+AFK.MouseButton1Down:Connect(function()
+	AFKT = -AFKT
+	if AFKT > 0 then
+		AFKK = game:GetService("RunService").Stepped:Connect(afkLoop)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-4237.2, 533.9, 1062.2)
+	else
+		AFKK:Disconnect()
+	end
+end)
 
 Fullbright.MouseButton1Down:Connect(function()
 	game:GetService("Lighting").Brightness = 2
