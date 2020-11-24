@@ -727,9 +727,19 @@ local AFKT = -1
 
 local Threshold = 2
 
+local timer = 0
+
+local prevTimer
+
 function afkLoop()
-	if clockMinThresh(game.Lighting.ClockTime, 6, 0, Threshold) then
-		
+	if timer - prevTimer > 60 then
+		prevTimer = timer
+		getFruit()
+		wait(1)
+		eatFruit()
+		wait(5)
+		eatFruit()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-4237.2, 533.9, 1062.2)
 	end
 end
 
@@ -738,10 +748,13 @@ local AFKK = nil
 AFK.MouseButton1Down:Connect(function()
 	AFKT = -AFKT
 	if AFKT > 0 then
+		prevTimer = timer
 		AFKK = game:GetService("RunService").Stepped:Connect(afkLoop)
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-4237.2, 533.9, 1062.2)
+		AFK.Text = "AFK [ON]"
 	else
 		AFKK:Disconnect()
+		AFK.Text = "AFK [OFF]"
 	end
 end)
 
@@ -763,7 +776,7 @@ MaxSpeed.MouseButton1Down:Connect(function()
 	game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 25
 end)
 
-GetFruit.MouseButton1Down:Connect(function()
+function getFruit()
 	local player = game:GetService("Players").LocalPlayer
 	local BV
 
@@ -794,7 +807,18 @@ GetFruit.MouseButton1Down:Connect(function()
 	wait()
 	BV:Destroy()
 	player.Character.Humanoid.PlatformStand = false
-end)
+end
+
+function eatFruit()
+	if game.Players.LocalPlayer.Backpack:FindFirstChild("Pride Melon") then
+		game.Players.LocalPlayer.Backpack["Pride Melon"].Parent = game.Players.LocalPlayer.Character
+	end
+	if game.Players.LocalPlayer.Character:FindFirstChild("Pride Melon") then
+		game.ReplicatedStorage.Events.Game:FireServer("ConsumeItem", game.Players.LocalPlayer.Character["Pride Melon"])
+	end
+end
+
+GetFruit.MouseButton1Down:Connect(getFruit)
 
 function tweenTps()
 	if (TpsToggle > 0) then
@@ -987,3 +1011,8 @@ UserInputService.InputChanged:Connect(function(input)
 		update(input)
 	end
 end)
+
+while true do
+	wait(1)
+	timer = timer + 1
+end
