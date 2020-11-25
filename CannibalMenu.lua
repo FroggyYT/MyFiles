@@ -1,12 +1,15 @@
 local player = game:GetService("Players").LocalPlayer
 local Mouse = player:GetMouse()
 
+local noClipBind = "v"
+local flyBind = "n"
+
 Mouse.KeyDown:Connect(function(key)
-	if key == "v" then
+	if key == noClipBind then
 		toggleNoclip()
 	end
 	
-	if key == "n" then
+	if key == flyBind then
 		toggleFly()
 	end
 end)
@@ -111,8 +114,13 @@ local AdminTp = Instance.new("TextButton")
 local BunkerTp = Instance.new("TextButton")
 local SpawnTp = Instance.new("TextButton")
 local AFK = Instance.new("TextButton")
+local bindButton = Instance.new("TextButton")
+local Binds = Instance.new("Frame")
+local noClipBindBox = Instance.new("TextBox")
+local flyBindBox = Instance.new("TextBox")
 
 local TpsToggle = -1
+local BindsToggle = -1
 
 Menu.Name = "CannibalMenu"
 Menu.Parent = game.CoreGui
@@ -271,7 +279,7 @@ NoClip.Position = UDim2.new(0, 0, 0, 250)
 NoClip.BackgroundTransparency = 0.7
 NoClip.BackgroundColor3 = Color3.new(0, 0, 0)
 NoClip.BorderSizePixel = 0
-NoClip.Text = "NoClip [OFF]"
+NoClip.Text = "NoClip [OFF] (" .. noClipBind .. ")"
 NoClip.TextColor3 = Color3.new(1, 1, 1)
 NoClip.TextSize = 20
 local NoClipx = Instance.new("NumberValue", NoClip)
@@ -288,7 +296,7 @@ FlyButton.Position = UDim2.new(0, 0, 0, 300)
 FlyButton.BackgroundTransparency = 0.7
 FlyButton.BackgroundColor3 = Color3.new(0, 0, 0)
 FlyButton.BorderSizePixel = 0
-FlyButton.Text = "Fly [OFF]"
+FlyButton.Text = "Fly [OFF] (" .. flyBind .. ")"
 FlyButton.TextColor3 = Color3.new(1, 1, 1)
 FlyButton.TextSize = 20
 local FlyButtonx = Instance.new("NumberValue", FlyButton)
@@ -315,6 +323,23 @@ AFKy.Name = "py"
 AFKx.Value = 0
 AFKy.Value = 350
 
+bindButton.Name = "bindButton"
+bindButton.Parent = Main
+bindButton.Size = UDim2.new(0, 300, 0, 50)
+bindButton.Position = UDim2.new(0, 0, 0, 400)
+bindButton.BackgroundTransparency = 0.7
+bindButton.BackgroundColor3 = Color3.new(0, 0, 0)
+bindButton.BorderSizePixel = 0
+bindButton.Text = "Change Binds >>"
+bindButton.TextColor3 = Color3.new(1, 1, 1)
+bindButton.TextSize = 20
+local bindButtonx = Instance.new("NumberValue", bindButton)
+local bindButtony = Instance.new("NumberValue", bindButton)
+bindButtonx.Name = "px"
+bindButtony.Name = "py"
+bindButtonx.Value = 0
+bindButtony.Value = 400
+
 Teleports.Name = "Teleports"
 Teleports.Parent = TopBar
 Teleports.Size = UDim2.new(0, 0, 0, 0)
@@ -323,6 +348,15 @@ Teleports.BackgroundTransparency = 1
 Teleports.BackgroundColor3 = Color3.new(0.1, 0.1, 0.2)
 Teleports.BorderSizePixel = 0
 Teleports.Visible = false
+
+Binds.Name = "Binds"
+Binds.Parent = TopBar
+Binds.Size = UDim2.new(0, 0, 0, 0)
+Binds.Position = UDim2.new(0, 300, 0, 50)
+Binds.BackgroundTransparency = 1
+Binds.BackgroundColor3 = Color3.new(0.1, 0.1, 0.2)
+Binds.BorderSizePixel = 0
+Binds.Visible = false
 
 RoomTp.Name = "RoomTp"
 RoomTp.Parent = Teleports
@@ -477,6 +511,45 @@ SpawnTpy.Name = "py"
 SpawnTpx.Value = 0
 SpawnTpy.Value = 400
 
+
+
+
+noClipBindBox.Name = "noClipBindBox"
+noClipBindBox.Parent = Binds
+noClipBindBox.Size = UDim2.new(0, 0, 0, 50)
+noClipBindBox.Position = UDim2.new(0, 0, 0, 0)
+noClipBindBox.BackgroundTransparency = 1
+noClipBindBox.BackgroundColor3 = Color3.new(0, 0, 0)
+noClipBindBox.BorderSizePixel = 0
+noClipBindBox.Text = ""
+noClipBindBox.PlaceholderText = "NoClip"
+noClipBindBox.TextColor3 = Color3.new(1, 1, 1)
+noClipBindBox.TextSize = 20
+local noClipBindBoxx = Instance.new("NumberValue", noClipBindBox)
+local noClipBindBoxy = Instance.new("NumberValue", noClipBindBox)
+noClipBindBoxx.Name = "px"
+noClipBindBoxy.Name = "py"
+noClipBindBoxx.Value = 0
+noClipBindBoxy.Value = 0
+
+flyBindBox.Name = "flyBindBox"
+flyBindBox.Parent = Binds
+flyBindBox.Size = UDim2.new(0, 0, 0, 50)
+flyBindBox.Position = UDim2.new(0, 0, 0, 0)
+flyBindBox.BackgroundTransparency = 1
+flyBindBox.BackgroundColor3 = Color3.new(0, 0, 0)
+flyBindBox.BorderSizePixel = 0
+flyBindBox.Text = ""
+flyBindBox.PlaceholderText = "Fly"
+flyBindBox.TextColor3 = Color3.new(1, 1, 1)
+flyBindBox.TextSize = 20
+local flyBindBoxx = Instance.new("NumberValue", flyBindBox)
+local flyBindBoxy = Instance.new("NumberValue", flyBindBox)
+flyBindBoxx.Name = "px"
+flyBindBoxy.Name = "py"
+flyBindBoxx.Value = 0
+flyBindBoxy.Value = 50
+
 SpawnTp.MouseButton1Down:Connect(function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2739.5, 52.4, 1462.7)
 end)
@@ -529,13 +602,26 @@ end
 function toggleNoclip()
 	clipping = -clipping
 	if clipping > 0 then
-		NoClip.Text = "NoClip [OFF]"
+		NoClip.Text = "NoClip [OFF] (" .. noClipBind .. ")"
 		if Noclipping then
 			Noclipping:Disconnect()
 		end
 	else
-		NoClip.Text = "NoClip [ON]"
+		NoClip.Text = "NoClip [ON] (" .. noClipBind .. ")"
 		Noclipping = game:GetService("RunService").Stepped:Connect(NoclipLoop)
+	end
+end
+
+local flying = -1
+
+function toggleFly()
+	flying = -flying
+	if flying > 0 then
+		FlyButton.Text = "Fly [ON] (" .. flyBind .. ")"
+		sFLY()
+	else
+		FlyButton.Text = "Fly [OFF] (" .. flyBind .. ")"
+		NOFLY()
 	end
 end
 
@@ -550,18 +636,7 @@ game:GetService("RunService").Stepped:Connect(ClockLoop)
 
 
 
-local flying = -1
 
-function toggleFly()
-	flying = -flying
-	if flying > 0 then
-		FlyButton.Text = "Fly [ON]"
-		sFLY()
-	else
-		FlyButton.Text = "Fly [OFF]"
-		NOFLY()
-	end
-end
 
 
 
@@ -800,7 +875,9 @@ function getFruit()
 	players.LocalPlayer.Character.HumanoidRootPart.CFrame = fruitPos
 	wait()
 	local cd = click_detector or fireclickdetector
-	cd(fruit.ClickDetector, 10)
+	if cd then
+		cd(fruit.ClickDetector, 10)
+	end
 	wait()
 	players.LocalPlayer.Character.HumanoidRootPart.CFrame = oldPos
 
@@ -890,8 +967,124 @@ end
 
 TPS.MouseButton1Down:Connect(function()
 	TpsToggle = -TpsToggle
+	BindsToggle = -1
+	tweenBinds()
 	tweenTps()
 end)
+
+function tweenBinds()
+	for i, v in pairs(Binds:GetChildren()) do
+		v.Text = ""
+	end
+
+	if (BindsToggle > 0) then
+		local goal = {}
+		goal.Size = UDim2.new(0, 300, 0, 600)
+		goal.Transparency = 0.3
+		goal.Visible = true
+		Binds.Active = true
+	
+		local info = TweenInfo.new(tSpeed)
+	
+		local tween = TweenService:Create(Binds, info, goal)
+	
+		tween:Play()
+	
+		bindButton.Text = "Change Binds <<"
+		
+		--
+		
+		for i,v in pairs(Binds:GetChildren()) do
+			local goal = {}
+			goal.Position = UDim2.new(0, v.px.Value, 0, v.py.Value)
+			goal.Size = UDim2.new(0, 300, 0, 50)
+			goal.BackgroundTransparency = 0.7
+			goal.TextTransparency = 0
+			goal.Visible = true
+			v.Active = true
+			
+			local info = TweenInfo.new(tSpeed)
+			
+			local tween = TweenService:Create(v, info, goal)
+			
+			tween:Play()
+		end
+	else
+		local goal = {}
+		goal.Size = UDim2.new(0, 0, 0, 0)
+		goal.Transparency = 1
+		goal.Visible = false
+		Binds.Active = false
+	
+		local info = TweenInfo.new(tSpeed)
+	
+		local tween = TweenService:Create(Binds, info, goal)
+	
+		tween:Play()
+	
+		bindButton.Text = "Change Binds >>"
+		
+		--
+		
+		for i,v in pairs(Binds:GetChildren()) do
+			local goal = {}
+			goal.Position = UDim2.new(0, 0, 0, 0)
+			goal.Size = UDim2.new(0, 0, 0, 50)
+			goal.Transparency = 1
+			goal.Visible = false
+			v.Active = false
+			
+			local info = TweenInfo.new(tSpeed)
+			
+			local tween = TweenService:Create(v, info, goal)
+			
+			tween:Play()
+		end
+	end
+end
+
+bindButton.MouseButton1Down:Connect(function()
+	BindsToggle = -BindsToggle
+	TpsToggle = -1
+	tweenTps()
+	tweenBinds()
+end)
+
+
+
+
+
+
+
+noClipBindBox.FocusLost:Connect(function()
+	noClipBind = noClipBindBox.Text
+	local text = ""
+	if (clipping < 0) then
+		text = "ON"
+	else
+		text = "OFF"
+	end
+	NoClip.Text = "NoClip [" .. text .. "] (" .. noClipBind .. ")"
+end)
+
+flyBindBox.FocusLost:Connect(function()
+	flyBind = flyBindBox.Text
+	local text = ""
+	if (flying > 0) then
+		text = "ON"
+	else
+		text = "OFF"
+	end
+	FlyButton.Text = "Fly [" .. text .. "] (" .. flyBind .. ")"
+end)
+
+
+
+
+
+
+
+
 
 MinButton.MouseButton1Down:Connect(function()
 	local goal = {}
@@ -931,6 +1124,9 @@ MinButton.MouseButton1Down:Connect(function()
 	
 	TpsToggle = -1
 	tweenTps()
+	
+	BindsToggle = -1
+	tweenBinds()
 end)
 
 MaxButton.MouseButton1Down:Connect(function()
