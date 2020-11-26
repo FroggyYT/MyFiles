@@ -1,4 +1,3 @@
-
 local player = game:GetService("Players").LocalPlayer
 local Mouse = player:GetMouse()
 
@@ -24,9 +23,6 @@ Mouse.KeyDown:Connect(function(key)
 		toggleDoor()
 	end
 end)
-
-
--- -4237.2, 533.9, 1062.2
 
 
 if game.CoreGui:FindFirstChild("CannibalMenu") then
@@ -101,7 +97,7 @@ local TweenService = game:GetService("TweenService")
 local tSpeed = 0.5
 
 local Menu = Instance.new("ScreenGui")
-local Main = Instance.new("Frame")
+local Main = Instance.new("ScrollingFrame")
 local TopBar = Instance.new("Frame")
 local MinButton = Instance.new("TextButton")
 local MaxButton = Instance.new("TextButton")
@@ -127,6 +123,7 @@ local SpawnTp = Instance.new("TextButton")
 local AFK = Instance.new("TextButton")
 local unlockButton = Instance.new("TextButton")
 local doorButton = Instance.new("TextButton")
+local SexTp = Instance.new("TextButton")
 
 local TpsToggle = -1
 local BindsToggle = -1
@@ -527,6 +524,27 @@ SpawnTpx.Name = "px"
 SpawnTpy.Name = "py"
 SpawnTpx.Value = 0
 SpawnTpy.Value = 400
+
+SexTp.Name = "SexTp"
+SexTp.Parent = Teleports
+SexTp.Size = UDim2.new(0, 0, 0, 50)
+SexTp.Position = UDim2.new(0, 0, 0, 0)
+SexTp.BackgroundTransparency = 1
+SexTp.BackgroundColor3 = Color3.new(0, 0, 0)
+SexTp.BorderSizePixel = 0
+SexTp.Text = "Sex Cave"
+SexTp.TextColor3 = Color3.new(1, 1, 1)
+SexTp.TextSize = 20
+local SexTpx = Instance.new("NumberValue", SexTp)
+local SexTpy = Instance.new("NumberValue", SexTp)
+SexTpx.Name = "px"
+SexTpy.Name = "py"
+SexTpx.Value = 0
+SexTpy.Value = 450
+
+SexTp.MouseButton1Down:Connect(function()
+	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-3038.6, 144, 293.7)
+end)
 
 SpawnTp.MouseButton1Down:Connect(function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2739.5, 52.4, 1462.7)
