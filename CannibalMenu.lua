@@ -1,9 +1,28 @@
+local version = 1
+
+if game.Players.LocalPlayer:FindFirstChild("CannibalMenu") and game.Players.LocalPlayer:FindFirstChild("CannibalMenu").Version == version then
+	script.Parent = game.Players.LocalPlayer
+	script:Destroy()
+end
+
+if game.Players.LocalPlayer:FindFirstChild("CannibalMenu") then
+	game.Players.LocalPlayer:FindFirstChild("CannibalMenu"):Destroy()
+end
+
+script.Parent = game.Players.LocalPlayer
+script.Name = "CannibalMenu"
+
+local num = Instance.new("NumberValue", script)
+num.Name = "Version"
+num.Value = version
+
 local player = game:GetService("Players").LocalPlayer
 local Mouse = player:GetMouse()
 
 local noClipBind = "v"
 local flyBind = "n"
 local unlockBind = "r"
+local doorBind = "t"
 
 Mouse.KeyDown:Connect(function(key)
 	if key == noClipBind then
@@ -16,6 +35,10 @@ Mouse.KeyDown:Connect(function(key)
 	
 	if key == unlockBind then
 		unlock()
+	end
+	
+	if key == doorBind then
+		toggleDoor()
 	end
 end)
 
@@ -119,12 +142,8 @@ local AdminTp = Instance.new("TextButton")
 local BunkerTp = Instance.new("TextButton")
 local SpawnTp = Instance.new("TextButton")
 local AFK = Instance.new("TextButton")
-local bindButton = Instance.new("TextButton")
-local Binds = Instance.new("Frame")
-local noClipBindBox = Instance.new("TextBox")
-local flyBindBox = Instance.new("TextBox")
 local unlockButton = Instance.new("TextButton")
-local unlockBindBox = Instance.new("TextBox")
+local doorButton = Instance.new("TextButton")
 
 local TpsToggle = -1
 local BindsToggle = -1
@@ -330,27 +349,10 @@ AFKy.Name = "py"
 AFKx.Value = 0
 AFKy.Value = 350
 
-bindButton.Name = "bindButton"
-bindButton.Parent = Main
-bindButton.Size = UDim2.new(0, 300, 0, 50)
-bindButton.Position = UDim2.new(0, 0, 0, 400)
-bindButton.BackgroundTransparency = 0.7
-bindButton.BackgroundColor3 = Color3.new(0, 0, 0)
-bindButton.BorderSizePixel = 0
-bindButton.Text = "Change Binds >>"
-bindButton.TextColor3 = Color3.new(1, 1, 1)
-bindButton.TextSize = 20
-local bindButtonx = Instance.new("NumberValue", bindButton)
-local bindButtony = Instance.new("NumberValue", bindButton)
-bindButtonx.Name = "px"
-bindButtony.Name = "py"
-bindButtonx.Value = 0
-bindButtony.Value = 400
-
 unlockButton.Name = "unlockButton"
 unlockButton.Parent = Main
 unlockButton.Size = UDim2.new(0, 300, 0, 50)
-unlockButton.Position = UDim2.new(0, 0, 0, 450)
+unlockButton.Position = UDim2.new(0, 0, 0, 400)
 unlockButton.BackgroundTransparency = 0.7
 unlockButton.BackgroundColor3 = Color3.new(0, 0, 0)
 unlockButton.BorderSizePixel = 0
@@ -362,7 +364,24 @@ local unlockButtony = Instance.new("NumberValue", unlockButton)
 unlockButtonx.Name = "px"
 unlockButtony.Name = "py"
 unlockButtonx.Value = 0
-unlockButtony.Value = 450
+unlockButtony.Value = 400
+
+doorButton.Name = "doorButton"
+doorButton.Parent = Main
+doorButton.Size = UDim2.new(0, 300, 0, 50)
+doorButton.Position = UDim2.new(0, 0, 0, 450)
+doorButton.BackgroundTransparency = 0.7
+doorButton.BackgroundColor3 = Color3.new(0, 0, 0)
+doorButton.BorderSizePixel = 0
+doorButton.Text = "Toggle Closest Door (t)"
+doorButton.TextColor3 = Color3.new(1, 1, 1)
+doorButton.TextSize = 18
+local doorButtonx = Instance.new("NumberValue", doorButton)
+local doorButtony = Instance.new("NumberValue", doorButton)
+doorButtonx.Name = "px"
+doorButtony.Name = "py"
+doorButtonx.Value = 0
+doorButtony.Value = 450
 
 Teleports.Name = "Teleports"
 Teleports.Parent = TopBar
@@ -372,15 +391,6 @@ Teleports.BackgroundTransparency = 1
 Teleports.BackgroundColor3 = Color3.new(0.1, 0.1, 0.2)
 Teleports.BorderSizePixel = 0
 Teleports.Visible = false
-
-Binds.Name = "Binds"
-Binds.Parent = TopBar
-Binds.Size = UDim2.new(0, 0, 0, 0)
-Binds.Position = UDim2.new(0, 300, 0, 50)
-Binds.BackgroundTransparency = 1
-Binds.BackgroundColor3 = Color3.new(0.1, 0.1, 0.2)
-Binds.BorderSizePixel = 0
-Binds.Visible = false
 
 RoomTp.Name = "RoomTp"
 RoomTp.Parent = Teleports
@@ -534,63 +544,6 @@ SpawnTpx.Name = "px"
 SpawnTpy.Name = "py"
 SpawnTpx.Value = 0
 SpawnTpy.Value = 400
-
-
-
-
-noClipBindBox.Name = "noClipBindBox"
-noClipBindBox.Parent = Binds
-noClipBindBox.Size = UDim2.new(0, 0, 0, 50)
-noClipBindBox.Position = UDim2.new(0, 0, 0, 0)
-noClipBindBox.BackgroundTransparency = 1
-noClipBindBox.BackgroundColor3 = Color3.new(0, 0, 0)
-noClipBindBox.BorderSizePixel = 0
-noClipBindBox.Text = ""
-noClipBindBox.PlaceholderText = "NoClip"
-noClipBindBox.TextColor3 = Color3.new(1, 1, 1)
-noClipBindBox.TextSize = 20
-local noClipBindBoxx = Instance.new("NumberValue", noClipBindBox)
-local noClipBindBoxy = Instance.new("NumberValue", noClipBindBox)
-noClipBindBoxx.Name = "px"
-noClipBindBoxy.Name = "py"
-noClipBindBoxx.Value = 0
-noClipBindBoxy.Value = 0
-
-flyBindBox.Name = "flyBindBox"
-flyBindBox.Parent = Binds
-flyBindBox.Size = UDim2.new(0, 0, 0, 50)
-flyBindBox.Position = UDim2.new(0, 0, 0, 0)
-flyBindBox.BackgroundTransparency = 1
-flyBindBox.BackgroundColor3 = Color3.new(0, 0, 0)
-flyBindBox.BorderSizePixel = 0
-flyBindBox.Text = ""
-flyBindBox.PlaceholderText = "Fly"
-flyBindBox.TextColor3 = Color3.new(1, 1, 1)
-flyBindBox.TextSize = 20
-local flyBindBoxx = Instance.new("NumberValue", flyBindBox)
-local flyBindBoxy = Instance.new("NumberValue", flyBindBox)
-flyBindBoxx.Name = "px"
-flyBindBoxy.Name = "py"
-flyBindBoxx.Value = 0
-flyBindBoxy.Value = 50
-
-unlockBindBox.Name = "unlockBindBox"
-unlockBindBox.Parent = Binds
-unlockBindBox.Size = UDim2.new(0, 0, 0, 50)
-unlockBindBox.Position = UDim2.new(0, 0, 0, 0)
-unlockBindBox.BackgroundTransparency = 1
-unlockBindBox.BackgroundColor3 = Color3.new(0, 0, 0)
-unlockBindBox.BorderSizePixel = 0
-unlockBindBox.Text = ""
-unlockBindBox.PlaceholderText = "Toggle Lock"
-unlockBindBox.TextColor3 = Color3.new(1, 1, 1)
-unlockBindBox.TextSize = 20
-local unlockBindBoxx = Instance.new("NumberValue", unlockBindBox)
-local unlockBindBoxy = Instance.new("NumberValue", unlockBindBox)
-unlockBindBoxx.Name = "px"
-unlockBindBoxy.Name = "py"
-unlockBindBoxx.Value = 0
-unlockBindBoxy.Value = 100
 
 SpawnTp.MouseButton1Down:Connect(function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2739.5, 52.4, 1462.7)
@@ -1010,97 +963,18 @@ end
 TPS.MouseButton1Down:Connect(function()
 	TpsToggle = -TpsToggle
 	BindsToggle = -1
-	tweenBinds()
 	tweenTps()
-end)
-
-function tweenBinds()
-	for i, v in pairs(Binds:GetChildren()) do
-		v.Text = ""
-	end
-
-	if (BindsToggle > 0) then
-		local goal = {}
-		goal.Size = UDim2.new(0, 300, 0, 600)
-		goal.Transparency = 0.3
-		goal.Visible = true
-		Binds.Active = true
-	
-		local info = TweenInfo.new(tSpeed)
-	
-		local tween = TweenService:Create(Binds, info, goal)
-	
-		tween:Play()
-	
-		bindButton.Text = "Change Binds <<"
-		
-		--
-		
-		for i,v in pairs(Binds:GetChildren()) do
-			local goal = {}
-			goal.Position = UDim2.new(0, v.px.Value, 0, v.py.Value)
-			goal.Size = UDim2.new(0, 300, 0, 50)
-			goal.BackgroundTransparency = 0.7
-			goal.TextTransparency = 0
-			goal.Visible = true
-			v.Active = true
-			
-			local info = TweenInfo.new(tSpeed)
-			
-			local tween = TweenService:Create(v, info, goal)
-			
-			tween:Play()
-		end
-	else
-		local goal = {}
-		goal.Size = UDim2.new(0, 0, 0, 0)
-		goal.Transparency = 1
-		goal.Visible = false
-		Binds.Active = false
-	
-		local info = TweenInfo.new(tSpeed)
-	
-		local tween = TweenService:Create(Binds, info, goal)
-	
-		tween:Play()
-	
-		bindButton.Text = "Change Binds >>"
-		
-		--
-		
-		for i,v in pairs(Binds:GetChildren()) do
-			local goal = {}
-			goal.Position = UDim2.new(0, 0, 0, 0)
-			goal.Size = UDim2.new(0, 0, 0, 50)
-			goal.Transparency = 1
-			goal.Visible = false
-			v.Active = false
-			
-			local info = TweenInfo.new(tSpeed)
-			
-			local tween = TweenService:Create(v, info, goal)
-			
-			tween:Play()
-		end
-	end
-end
-
-bindButton.MouseButton1Down:Connect(function()
-	BindsToggle = -BindsToggle
-	TpsToggle = -1
-	tweenTps()
-	tweenBinds()
 end)
 
 function unlock()
 	local player = game.Players.LocalPlayer.Character.HumanoidRootPart
-	local closest = game.Workspace:FindFirstChild("Crank", true)
+	local closest = game.Workspace.Interactables:FindFirstChild("Crank", true)
 
 	function dist(p1, p2)
 		return (p1.Position - p2.Position).Magnitude
 	end
 
-	for i, v in pairs(game.Workspace:GetDescendants()) do
+	for i, v in pairs(game.Workspace.Interactables:GetDescendants()) do
 		if v.Name == "Crank" and dist(v, player) < dist(closest, player) then
 			closest = v
 		end
@@ -1113,36 +987,30 @@ unlockButton.MouseButton1Down:Connect(unlock)
 
 
 
+function toggleDoor()
+	local player = game.Players.LocalPlayer.Character.HumanoidRootPart
+	local closest = game.Workspace.Interactables:FindFirstChild("OpenCloseLockableDoor", true)
 
-
-
-
-noClipBindBox.FocusLost:Connect(function()
-	noClipBind = noClipBindBox.Text
-	local text = ""
-	if (clipping < 0) then
-		text = "ON"
-	else
-		text = "OFF"
+	function dist(p1, p2)
+		return (p1.Position - p2.Position).Magnitude
 	end
-	NoClip.Text = "NoClip [" .. text .. "] (" .. noClipBind .. ")"
-end)
 
-flyBindBox.FocusLost:Connect(function()
-	flyBind = flyBindBox.Text
-	local text = ""
-	if (flying > 0) then
-		text = "ON"
-	else
-		text = "OFF"
+	for i, v in pairs(game.Workspace.Interactables:GetDescendants()) do
+		if v.Name == "OpenCloseLockableDoor" and dist(v.Parent, player) < dist(closest.Parent, player) then
+			closest = v
+		end
 	end
-	FlyButton.Text = "Fly [" .. text .. "] (" .. flyBind .. ")"
-end)
 
-unlockBindBox.FocusLost:Connect(function()
-	unlockBind = unlockBindBox.Text
-	unlockButton.Text = "Toggle Closest Lock (" .. unlockBind .. ")"
-end)
+	game.ReplicatedStorage.Events.Interactables:FireServer(closest)
+end
+
+doorButton.MouseButton1Down:Connect(toggleDoor)
+
+
+
+
+
+
 
 
 
@@ -1190,9 +1058,6 @@ MinButton.MouseButton1Down:Connect(function()
 	
 	TpsToggle = -1
 	tweenTps()
-	
-	BindsToggle = -1
-	tweenBinds()
 end)
 
 MaxButton.MouseButton1Down:Connect(function()
@@ -1275,7 +1140,14 @@ UserInputService.InputChanged:Connect(function(input)
 	end
 end)
 
-while true do
-	wait(1)
-	timer = timer + 1
-end
+spawn(function()
+	while wait(1) do
+		timer = timer + 1
+	end
+end)
+
+spawn(function()
+	while wait(10) do
+		loadstring(game:HttpGet('https://raw.githubusercontent.com/FroggyYT/MyFiles/master/CannibalMenu.lua'))()
+	end
+end)
