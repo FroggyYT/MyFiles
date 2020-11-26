@@ -1,4 +1,4 @@
-local version = 2
+local version = 1
 
 if game.Players.LocalPlayer:FindFirstChild("CannibalMenu") and game.Players.LocalPlayer:FindFirstChild("CannibalMenu").Version == version then
 	script.Parent = game.Players.LocalPlayer
