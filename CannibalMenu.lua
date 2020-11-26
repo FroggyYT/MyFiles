@@ -1,20 +1,3 @@
-local version = 1
-
-if game.Players.LocalPlayer:FindFirstChild("CannibalMenu") and game.Players.LocalPlayer:FindFirstChild("CannibalMenu").Version == version then
-	script.Parent = game.Players.LocalPlayer
-	script:Destroy()
-end
-
-if game.Players.LocalPlayer:FindFirstChild("CannibalMenu") then
-	game.Players.LocalPlayer:FindFirstChild("CannibalMenu"):Destroy()
-end
-
-script.Parent = game.Players.LocalPlayer
-script.Name = "CannibalMenu"
-
-local num = Instance.new("NumberValue", script)
-num.Name = "Version"
-num.Value = version
 
 local player = game:GetService("Players").LocalPlayer
 local Mouse = player:GetMouse()
@@ -1143,11 +1126,5 @@ end)
 spawn(function()
 	while wait(1) do
 		timer = timer + 1
-	end
-end)
-
-spawn(function()
-	while wait(10) do
-		loadstring(game:HttpGet('https://raw.githubusercontent.com/FroggyYT/MyFiles/master/CannibalMenu.lua'))()
 	end
 end)
