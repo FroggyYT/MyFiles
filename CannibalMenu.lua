@@ -3,6 +3,7 @@ local Mouse = player:GetMouse()
 
 local noClipBind = "v"
 local flyBind = "n"
+local unlockBind = "r"
 
 Mouse.KeyDown:Connect(function(key)
 	if key == noClipBind then
@@ -11,6 +12,10 @@ Mouse.KeyDown:Connect(function(key)
 	
 	if key == flyBind then
 		toggleFly()
+	end
+	
+	if key == unlockBind then
+		unlock()
 	end
 end)
 
@@ -118,6 +123,8 @@ local bindButton = Instance.new("TextButton")
 local Binds = Instance.new("Frame")
 local noClipBindBox = Instance.new("TextBox")
 local flyBindBox = Instance.new("TextBox")
+local unlockButton = Instance.new("TextButton")
+local unlockBindBox = Instance.new("TextBox")
 
 local TpsToggle = -1
 local BindsToggle = -1
@@ -340,6 +347,23 @@ bindButtony.Name = "py"
 bindButtonx.Value = 0
 bindButtony.Value = 400
 
+unlockButton.Name = "unlockButton"
+unlockButton.Parent = Main
+unlockButton.Size = UDim2.new(0, 300, 0, 50)
+unlockButton.Position = UDim2.new(0, 0, 0, 450)
+unlockButton.BackgroundTransparency = 0.7
+unlockButton.BackgroundColor3 = Color3.new(0, 0, 0)
+unlockButton.BorderSizePixel = 0
+unlockButton.Text = "Toggle Closest Lock (r)"
+unlockButton.TextColor3 = Color3.new(1, 1, 1)
+unlockButton.TextSize = 18
+local unlockButtonx = Instance.new("NumberValue", unlockButton)
+local unlockButtony = Instance.new("NumberValue", unlockButton)
+unlockButtonx.Name = "px"
+unlockButtony.Name = "py"
+unlockButtonx.Value = 0
+unlockButtony.Value = 450
+
 Teleports.Name = "Teleports"
 Teleports.Parent = TopBar
 Teleports.Size = UDim2.new(0, 0, 0, 0)
@@ -549,6 +573,24 @@ flyBindBoxx.Name = "px"
 flyBindBoxy.Name = "py"
 flyBindBoxx.Value = 0
 flyBindBoxy.Value = 50
+
+unlockBindBox.Name = "unlockBindBox"
+unlockBindBox.Parent = Binds
+unlockBindBox.Size = UDim2.new(0, 0, 0, 50)
+unlockBindBox.Position = UDim2.new(0, 0, 0, 0)
+unlockBindBox.BackgroundTransparency = 1
+unlockBindBox.BackgroundColor3 = Color3.new(0, 0, 0)
+unlockBindBox.BorderSizePixel = 0
+unlockBindBox.Text = ""
+unlockBindBox.PlaceholderText = "Toggle Lock"
+unlockBindBox.TextColor3 = Color3.new(1, 1, 1)
+unlockBindBox.TextSize = 20
+local unlockBindBoxx = Instance.new("NumberValue", unlockBindBox)
+local unlockBindBoxy = Instance.new("NumberValue", unlockBindBox)
+unlockBindBoxx.Name = "px"
+unlockBindBoxy.Name = "py"
+unlockBindBoxx.Value = 0
+unlockBindBoxy.Value = 100
 
 SpawnTp.MouseButton1Down:Connect(function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-2739.5, 52.4, 1462.7)
@@ -1050,6 +1092,25 @@ bindButton.MouseButton1Down:Connect(function()
 	tweenBinds()
 end)
 
+function unlock()
+	local player = game.Players.LocalPlayer.Character.HumanoidRootPart
+	local closest = game.Workspace:FindFirstChild("Crank", true)
+
+	function dist(p1, p2)
+		return (p1.Position - p2.Position).Magnitude
+	end
+
+	for i, v in pairs(game.Workspace:GetDescendants()) do
+		if v.Name == "Crank" and dist(v, player) < dist(closest, player) then
+			closest = v
+		end
+	end
+
+	game.ReplicatedStorage.Events.Interactables:FireServer(closest.ToggleLock)
+end
+
+unlockButton.MouseButton1Down:Connect(unlock)
+
 
 
 
@@ -1076,6 +1137,11 @@ flyBindBox.FocusLost:Connect(function()
 		text = "OFF"
 	end
 	FlyButton.Text = "Fly [" .. text .. "] (" .. flyBind .. ")"
+end)
+
+unlockBindBox.FocusLost:Connect(function()
+	unlockBind = unlockBindBox.Text
+	unlockButton.Text = "Toggle Closest Lock (" .. unlockBind .. ")"
 end)
 
 
